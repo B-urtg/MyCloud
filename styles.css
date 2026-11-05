@@ -80,3 +80,17 @@ html, body {height: 100vh; margin: 0; overflow: hidden;}
     background-color: #591515;
     color: #e5e1e1;
 }
+.grid {
+    display: grid;
+    min-height: 100vh;
+    grid-template-areas: "header" "cloud-panel";
+    grid-template-rows: 7vh 93vh;
+}
+.header {
+    grid-area: header;
+    border: 1px solid;
+    border-color: #591515;
+}
+.cloud-panel {
+    grid-area: cloud-panel;
+}

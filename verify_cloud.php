@@ -24,21 +24,27 @@ else
  if($rekord['password']==$pass) // czy hasło zgadza się z BD
  {
   session_start();
-  if (isset($_POST['geoblokada'])) {
-    $ipaddress = $_SERVER["REMOTE_ADDR"];
-    $details = ip_details($ipaddress);
-    if ($details && isset($details->country) && $details->country !== 'PL') {
-        $_SESSION['loggedin']=false;
+  $ipaddress = $_SERVER["REMOTE_ADDR"];
+  if (!isset($_SESSION['visitor_logged']))
+  {
+    if ($link) 
+    {
+        mysqli_query($link, "SET NAMES 'utf8'");
+        $sql = "INSERT INTO visitors (ipaddress) VALUES ('$ipaddress')";
+        if (mysqli_query($link, $sql))
+        {
+            $_SESSION['visitor_logged'] = $ipaddress;
+        }
         mysqli_close($link);
-        header("Location: index.php");
-        exit();
     }
   }
+  $clean_user_dir_name = preg_replace('/[^a-zA-Z0-9_-]/', '_', $rekord['username']);
   $_SESSION['loggedin']=true;
   $_SESSION['user']=$rekord['username'];
   $_SESSION['avatar']=$rekord['avatar'];
+  $_SESSION['user_home'] = '/mnt/drive/users/' . $clean_user_dir_name . '/';
   mysqli_close($link);
-  header("Location: index.php");
+  header("Location: user_panel.php");
   exit();
  }
  else

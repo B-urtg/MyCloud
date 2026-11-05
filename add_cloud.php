@@ -48,6 +48,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $sql = "INSERT INTO users (username, password, avatar, role) VALUES ('$user_safe', '$pass', '$avatarPath', 'user')";
                 
                 if (mysqli_query($link, $sql)) {
+                    $clean_user_dir_name = preg_replace('/[^a-zA-Z0-9_-]/', '_', $user);
+                    $user_home_dir = '/mnt/drive/users/' . $clean_user_dir_name . '/';
+                    if (!is_dir($user_home_dir)) {
+                        // Tworzy katalog wraz z rodzicami, jeśli nie istnieją
+                        mkdir($user_home_dir, 0755, true);
+                        
+                        // Przypisanie uprawnień dla serwera WWW Apache
+                        chown($user_home_dir, 'www-data');
+                        chgrp($user_home_dir, 'www-data');
+                    }
                     header("Location: index.php"); // Przekierowanie po udanej rejestracji
                     exit();
                 } else {
