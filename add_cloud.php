@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+require_once 'config.php';
 session_start();
 
 // Logika rejestracji uruchamiana po wysłaniu formularza metodą POST
@@ -12,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($pass !== $pass2) {
         $error = "Hasła nie są identyczne!";
     } else {
-        $link = mysqli_connect('localhost', 'root', 'pppp', 'Zawada_cloud');
+        $link = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
         if ($link) {
             mysqli_query($link, "SET NAMES 'utf8'");
 

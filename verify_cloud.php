@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+require_once 'config.php';
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 function ip_details($ip) {
@@ -8,7 +9,7 @@ function ip_details($ip) {
 $user= htmlentities ($_POST['user'], ENT_QUOTES, "UTF-8");
 $pass= htmlentities ($_POST['pass'], ENT_QUOTES, "UTF-8");
 $pass = htmlentities ($pass, ENT_QUOTES, "UTF-8");
-$link = mysqli_connect('localhost', 'root', 'pppp', 'Zawada_cloud'); // połączenie z BD – wpisać swoje dane
+$link = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME); // połączenie z BD – wpisać swoje dane
 if(!$link) { echo"Błąd: ". mysqli_connect_errno()." ".mysqli_connect_error(); } // obsługa błędu połączenia z BD
 mysqli_query($link, "SET NAMES 'utf8'"); // ustawienie polskich znaków
 $result = mysqli_query($link, "SELECT * FROM users WHERE username='$user'"); // wiersza, w którym login=login z formularza

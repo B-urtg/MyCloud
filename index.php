@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+require_once 'config.php';
 session_destroy();
 session_start();
 error_reporting(E_ALL);
@@ -6,7 +7,7 @@ ini_set('display_errors', '1');
 $ipaddress = $_SERVER["REMOTE_ADDR"];
 if (!isset($_SESSION['visitor_logged']))
 {
-    $link = mysqli_connect('localhost', 'root', 'pppp', 'Zawada_cloud');
+    $link = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
     if ($link) 
     {
         mysqli_query($link, "SET NAMES 'utf8'");
