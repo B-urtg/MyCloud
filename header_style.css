@@ -1,0 +1,58 @@
+@import url('../Font/Outfit.css');
+:root {
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #c4a9a9;
+    background: #200707;
+    font-synthesis: none;
+}
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.breadcrumb {
+    list-style: none !important;
+    --bs-breadcrumb-divider: '/';
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 0 !important;
+    text-decoration: none;
+    color: #ce9191;
+}
+.breadcrumb-item + .breadcrumb-item::before {
+    display: inline-block;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+    color: #ce9191;
+    content: var(--bs-breadcrumb-divider);
+    text-decoration: none;
+}
+.breadcrumb-text {
+    text-decoration: none;
+    color: #c4a9a9;
+}
+.user-panel {
+    display: flex !important;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: auto;
+    margin-right: 30px;
+    text-decoration: none;
+    color: #ce9191;
+}
+.avatar {
+    display: inline-block;
+    border-radius: 50%;
+    height: 32px;
+}
+.profile {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin-top: auto;
+}

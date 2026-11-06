@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (mysqli_num_rows($check) > 0) {
                 $error = "Taki użytkownik już istnieje!";
             } else {
-                $avatarPath = "Avatary/user-default.jpg"; // Domyślny awatar
+                $avatarPath = "Avatars/user-default.jpg"; // Domyślny awatar
 
                 if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
                     $fileTmpPath = $_FILES['avatar']['tmp_name'];
@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     if (in_array($fileExtension, $allowedExtensions)) {
                         $newFileName = 'avatar_' . uniqid() . '.' . $fileExtension;
-                        $uploadFolder = 'Avatary/';
+                        $uploadFolder = 'Avatars/';
 
                         if (!is_dir($uploadFolder)) {
                             mkdir($uploadFolder, 0755, true);

@@ -86,11 +86,13 @@ html, body {height: 100vh; margin: 0; overflow: hidden;}
     grid-template-areas: "header" "cloud-panel";
     grid-template-rows: 7vh 93vh;
 }
-.header {
+.container-fluid {
     grid-area: header;
     border: 1px solid;
     border-color: #591515;
+    padding: 5px;
 }
 .cloud-panel {
     grid-area: cloud-panel;
+    padding: 30px;
 }
