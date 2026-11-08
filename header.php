@@ -10,12 +10,23 @@ $accumulated_path = '';
     <link rel="stylesheet" href="header_style.css">
 </head>
 <nav class="navbar">
+    <div class="up">
+        <?php if(!empty($sub_dir)): ?>
+        <a href="user_panel.php?dir=<?php echo urlencode($parent_dir); ?>" class="up" title="Folder wyżej">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                <line x1="12" y1="17" x2="12" y2="10"></line>
+                <polyline points="9 13 12 10 15 13"></polyline>
+            </svg>
+        </a>
+        <?php endif; ?>
+    </div>
     <u1 aria-label="breadcrumb-nav">
         <ol class="breadcrumb">
             <?php if (empty($segments)): ?>
                 <li class="breadcrumb-item active" aria-current="page">MyCloud</li>
             <?php else: ?>
-                <li class="breadcrumb-item"><a href="user_panel_test.php" class="breadcrumb-text">MyCloud</a></li>
+                <li class="breadcrumb-item"><a href="user_panel.php" class="breadcrumb-text">MyCloud</a></li>
             <?php endif; ?>
             <?php foreach ($segments as $index => $segment): 
                 if ($accumulated_path === '') {
@@ -31,7 +42,7 @@ $accumulated_path = '';
                 </li>
             <?php else: ?>
                 <li class="breadcrumb-item">
-                    <a href="user_panel_test.php?dir=<?php echo urlencode($accumulated_path); ?>" class="breadcrumb-text">
+                    <a href="user_panel.php?dir=<?php echo urlencode($accumulated_path); ?>" class="breadcrumb-text">
                         <?php echo htmlspecialchars($segment); ?>
                     </a>
                 </li>
