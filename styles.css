@@ -18,14 +18,13 @@ html, body {height: 100vh; margin: 0; overflow: hidden; text-decoration: none;}
 .logbox {
     gap: var(--space-4);
     width: min(360px,100%);
-    display: grid
+    display: grid;
 }
 .login-header {
     font-size: 32px;
     justify-content: center;
     display: flex;
     align-items: center;
-    display: flex;
 }
 .cloud-icon {
     fill: none;
@@ -101,16 +100,44 @@ html, body {height: 100vh; margin: 0; overflow: hidden; text-decoration: none;}
     padding: 30px;
     overflow-y: auto;
 }
+
+/* Standardowy panel (foldery, pliki zwykłe, audio) - szerokość 200px, wysokość 50px */
+.element-panel {
+    position: relative;
+    width: 200px;
+    height: 50px; 
+    margin-bottom: 15px;
+}
+
+/* Panel dla kafelków medialnych (grafika, wideo) – zapobiega nachodzeniu na siebie */
+.element-panel {
+    width: 200px;
+    height: auto;
+    margin-bottom: 15px;
+}
+.media-element-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
 .element {
+    position: relative !important;
     cursor: pointer;
     text-decoration: none;
     box-sizing: border-box;
-    display: inline-block;
+    display: flex;
+    align-items: center;
     padding: 13px;
+    padding-right: 35px !important; 
     border-radius: 17px;
     border: 2px solid;
     border-color: #c4a9a9;
-    width: 150px;
+    width: 200px;
+    max-width: 200px;
+    height: 50px;
+    z-index: 1;
+    background-color: #200707;
 }
 .element:hover {
     border-color: #ce9191;
@@ -118,30 +145,91 @@ html, body {height: 100vh; margin: 0; overflow: hidden; text-decoration: none;}
 .content-box {
     text-decoration: none;
     color: #c4a9a9;
+    display: block;
+    align-items: center;
+    min-width: 0;
+    width: 100%;
+    white-space: nowrap;       
+    overflow: hidden;          
+    text-overflow: ellipsis;   
 }
+
+/* Styl dla przycisku kosza */
+.del-btn {
+    position: absolute;
+    top: 11px;
+    right: 11px;
+    z-index: 5; 
+    width: 28px;
+    height: 28px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: #c4a9a9;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+.del-btn:hover {
+    color: #ff4d4d;
+    background-color: rgba(255, 77, 77, 0.1);
+}
+
+/* Styl dla przycisku pobierania */
+.download-btn {
+    position: absolute;
+    top: 11px;
+    right: 42px; 
+    z-index: 5;
+    width: 28px;
+    height: 28px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: #c4a9a9;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+.download-btn:hover {
+    color: #91ce91;
+    background-color: rgba(145, 206, 145, 0.1);
+}
+
 .new-elements {
     grid-area: new-dir;
     text-decoration: none;
     padding: 15px;
+    display: flex;
+    gap: 15px;
 }
-label.element {
-    text-decoration: none;
-    box-sizing: border-box;
+
+/* Naprawa wyglądu przycisków dodawania w dolnym panelu */
+.new-elements label.element {
+    width: 60px !important;
+    height: 50px !important;
     display: inline-flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 13px;
-    border-radius: 7px;
-    border: 2px solid;
-    color: #c4a9a9;
-    border-color: #c4a9a9;
+    padding: 0 !important;
+    border-radius: 12px;
+    border: 2px solid #c4a9a9;
     background-color: #200707;
-    width: 60px;
 }
-label.element:hover {
+.new-elements label.element:hover {
     border-color: #ce9191;
 }
+
 .folder-icon {
     fill: none;
     stroke: currentColor;
@@ -179,33 +267,30 @@ label.element:hover {
     transform: scale(0.9);
     transition: transform 0.3s ease;
 }
-#popup-folder:checked ~ .popup-overlay#overlay-folder {
+
+.element-panel .popup-checkbox:checked ~ .popup-overlay {
     opacity: 1;
     visibility: visible;
 }
-
-#popup-folder:checked ~ .popup-overlay#overlay-folder .popup-box {
+.element-panel .popup-checkbox:checked ~ .popup-overlay .popup-box {
     transform: scale(1);
 }
 
-#popup-file:checked ~ .popup-overlay#overlay-file {
+#popup-folder:checked ~ #overlay-folder,
+#popup-file:checked ~ #overlay-file {
     opacity: 1;
     visibility: visible;
 }
-
-#popup-file:checked ~ .popup-overlay#overlay-file .popup-box {
+#popup-folder:checked ~ #overlay-folder .popup-box,
+#popup-file:checked ~ #overlay-file .popup-box {
     transform: scale(1);
-}
-
-.popup-input:focus {
-    border-color: #ce9191;
-    outline: none;
 }
 
 .popup-buttons {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
+    margin-top: 20px;
 }
 
 .button-popup, button.button-popup {
@@ -218,8 +303,114 @@ label.element:hover {
     border: 2px solid;
     border-color: #c4a9a9;
     color: #c4a9a9;
+    text-decoration: none;
 }
-
 .button-popup:hover, button.button-popup:hover {
     border-color: #ce9191;
+}
+
+/* Kafelki medialne (grafika / wideo) z układem pionowym */
+.media-tile {
+    display: flex;
+    flex-direction: column;   
+    align-items: stretch;
+    width: 200px !important;    
+    height: 210px !important;
+    padding: 12px !important;
+    padding-right: 12px !important;
+}
+
+.media-tile .content-box {
+    width: 100%;
+    padding-right: 50px;      
+    margin-bottom: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;  
+}
+
+.media-tile .file-thumb {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;        
+    border-radius: 8px;
+    display: block;
+    margin: 0 auto;
+    background-color: #000; /* Tło zastępcze dla wideo zanim załaduje się klatka */
+}
+
+/* Miniatura grafiki / wideo w kafelku (176px szerokości, 140px wysokości) */
+.file-thumb {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;        
+    border-radius: 8px;
+    display: block;
+    margin: 0 auto;
+}
+
+.audio-container {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 200px !important;
+    max-width: 200px !important;
+    height: auto !important;
+    min-height: 95px;
+    padding: 13px !important;
+}
+
+/* Styl okna modalnego podglądu */
+.media-modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.85);
+    justify-content: center;
+    align-items: center;
+}
+
+.media-modal-content {
+    background-color: #200707;
+    border: 2px solid #591515;
+    padding: 35px;
+    border-radius: 12px;
+    position: relative;
+    max-width: 90%;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.media-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: #c4a9a9;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.media-close:hover {
+    color: #ff4d4d;
+}
+
+.audio-container .content-box {
+    width: 100%;
+    padding-right: 50px; /* Zostawia wolne miejsce na ikony pobierania i kosza u góry */
+    margin-bottom: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Zwijanie tekstu trzykropkiem */
+}
+/* Odtwarzacz audio dopasowany do szerokości kafelka (100% szerokości wnętrza) */
+.audio-container audio {
+    width: 100% !important;
+    height: 35px;
+    margin-top: auto;
 }

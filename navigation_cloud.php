@@ -48,4 +48,4 @@ if ($display_path !== '/') {
 }
 
 // pobranie zawartości katalogu
-$files = array_diff(scandir($current_dir), array('..', '.'));
+$files = array_diff(scandir($current_dir), ['.', '..', '.thumbs']);
