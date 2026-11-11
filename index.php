@@ -54,7 +54,7 @@ if (!isset($_SESSION['visitor_logged']))
                     <a class="button" href="register_cloud.php">Rejestracja</a>
                 </div>
                 <div style="padding: 45px;">
-                    <a class="button" href="../index.php.php">Home</a>
+                    <a class="button" href="../index.php">Home</a>
                 </div>
             </div>
         </main>
