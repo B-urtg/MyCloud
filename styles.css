@@ -1,4 +1,5 @@
 @import url('../Font/Outfit.css');
+
 :root {
     font-family: 'Outfit', sans-serif;
     font-size: 16px;
@@ -7,25 +8,38 @@
     background: #200707;
     font-synthesis: none;
 }
-* {box-sizing: border-box;}
-html, body {height: 100vh; margin: 0; overflow: hidden; text-decoration: none;}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    text-decoration: none;
+}
+
 .login {
     min-height: 100dvh;
     padding: var(--space-6) var(--space-4);
     place-items: center;
     display: grid;
 }
+
 .logbox {
     gap: var(--space-4);
-    width: min(360px,100%);
+    width: min(360px, 100%);
     display: grid;
 }
+
 .login-header {
     font-size: 32px;
     justify-content: center;
     display: flex;
     align-items: center;
 }
+
 .cloud-icon {
     fill: none;
     stroke: currentColor;
@@ -33,16 +47,17 @@ html, body {height: 100vh; margin: 0; overflow: hidden; text-decoration: none;}
     stroke-linecap: round;
     stroke-linejoin: round;
 }
+
 .login-label {
     font-size: 20px;
     padding: 10px;
 }
+
 .inputbox {
     font-family: inherit;
     font-size: 20px;
     text-decoration: none;
     box-sizing: border-box;
-    display: inline-block;
     background-color: #200707;
     text-align: left;
     width: 100%;
@@ -56,10 +71,10 @@ html, body {height: 100vh; margin: 0; overflow: hidden; text-decoration: none;}
     justify-content: center;
     margin-bottom: 15px;
 }
+
 .button {
     font-family: inherit;
     font-size: 18px;
-    display: inline-block;
     text-decoration: none;
     background-color: #e5e1e1;
     text-align: center;
@@ -75,50 +90,53 @@ html, body {height: 100vh; margin: 0; overflow: hidden; text-decoration: none;}
     justify-content: center;
     transition: background-color 0.2s ease;
 }
+
 .button:hover {
     background-color: #591515;
     color: #e5e1e1;
 }
+
 .grid {
     display: grid;
     min-height: 100vh;
-    grid-template-areas:"header" "cloud-panel" "new-dir";
-    grid-template-rows: auto 1fr auto;
+    grid-template-areas: "header" "playlist-controls" "spotify-panel" "new-elements";
+    grid-template-rows: auto auto 1fr auto;
 }
-.container-fluid {
-    border: 1px solid;
-    border-color: #591515;
-    padding: 5px;
-}
-.cloud-panel {
+
+.spotify-panel {
     text-decoration: none;
-    grid-area: cloud-panel;
+    grid-area: spotify-panel;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 20px;
     align-content: flex-start;
     padding: 30px;
     overflow-y: auto;
 }
 
-/* Standardowy panel (foldery, pliki zwykłe, audio) - szerokość 200px, wysokość 50px */
-.element-panel {
-    position: relative;
-    width: 200px;
-    height: 50px; 
-    margin-bottom: 15px;
+.new-elements {
+    grid-area: new-elements;
+    text-decoration: none;
+    padding: 15px;
+    display: flex;
+    gap: 15px;
 }
 
-/* Panel dla kafelków medialnych (grafika, wideo) – zapobiega nachodzeniu na siebie */
-.element-panel {
-    width: 200px;
-    height: auto;
-    margin-bottom: 15px;
-}
-.media-element-panel {
-    display: flex;
+.new-elements label.element {
+    width: 60px !important;
+    height: 50px !important;
+    display: inline-flex;
     flex-direction: column;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: center;
+    padding: 0 !important;
+    border-radius: 12px;
+    border: 2px solid #c4a9a9;
+    background-color: #200707;
+}
+
+.new-elements label.element:hover {
+    border-color: #ce9191;
 }
 
 .element {
@@ -129,32 +147,261 @@ html, body {height: 100vh; margin: 0; overflow: hidden; text-decoration: none;}
     display: flex;
     align-items: center;
     padding: 13px;
+    gap: 10px;
     padding-right: 35px !important; 
     border-radius: 17px;
     border: 2px solid;
     border-color: #c4a9a9;
-    width: 200px;
-    max-width: 200px;
+    width: auto;
+    min-width: 354px;
     height: 50px;
     z-index: 1;
     background-color: #200707;
 }
-.element:hover {
+
+.element:hover, .element.active-track {
     border-color: #ce9191;
 }
-.content-box {
+
+.element-popup {
+    cursor: pointer;
     text-decoration: none;
-    color: #c4a9a9;
-    display: block;
+    box-sizing: border-box;
+    display: flex;
     align-items: center;
-    min-width: 0;
-    width: 100%;
-    white-space: nowrap;       
-    overflow: hidden;          
-    text-overflow: ellipsis;   
+    padding: 13px;
+    border-radius: 17px;
+    border: 2px solid;
+    border-color: #c4a9a9;
+    width: auto;
+    height: 50px;
+    z-index: 1;
+    background-color: #200707;
 }
 
-/* Styl dla przycisku kosza */
+.element-popup:hover {
+    border-color: #ce9191;
+}
+
+/* POPUPY – NAPRAWIONE SELEKTORY I UKRYWANIE CHECKBOXÓW */
+.popup-checkbox {
+    display: none;
+}
+
+#popup-playlist:checked ~ #overlay-playlist,
+#popup-file:checked ~ #overlay-file,
+#popup-add-to-playlist:checked ~ #overlay-add-to-playlist,
+#popup-delete-playlist:checked ~ #overlay-delete-playlist,
+.element-panel .popup-checkbox:checked ~ .popup-overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+#popup-playlist:checked ~ #overlay-playlist .popup-box,
+#popup-file:checked ~ #overlay-file .popup-box,
+#popup-add-to-playlist:checked ~ #overlay-add-to-playlist .popup-box,
+#popup-delete-playlist:checked ~ #overlay-delete-playlist .popup-box,
+.element-panel .popup-checkbox:checked ~ .popup-overlay .popup-box {
+    transform: scale(1);
+}
+
+.popup-box {
+    background-color: #200707;
+    border: 2px solid #591515;
+    padding: 25px;
+    border-radius: 12px;
+    width: min(400px, 90%);
+    color: #c4a9a9;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.element-panel {
+    position: relative;
+    padding: 5px;
+}
+
+.popup-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.button-popup, button.button-popup {
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font: inherit;
+    font-family: inherit;
+    background-color: #200707;
+    border: 2px solid;
+    border-color: #c4a9a9;
+    color: #c4a9a9;
+    text-decoration: none;
+}
+
+.button-popup:hover, button.button-popup:hover {
+    border-color: #ce9191;
+}
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* POŁĄCZONE I UPORZĄDKOWANE .playlist-controls */
+.playlist-controls {
+    grid-area: playlist-controls;
+    position: sticky;
+    top: 15px;
+    z-index: 9999;
+    background: #181818;
+    color: #fff;
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    font-family: sans-serif;
+    border: 1px solid #591515;
+    
+    width: 90%;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 10px;
+}
+
+#global-playing-label {
+    font-size: 13px;
+    color: #ce9191;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 400px;
+}
+
+.global-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.ctrl-btn {
+    background: transparent;
+    color: #fff;
+    border: 1px solid #444;
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.ctrl-btn:hover {
+    background: #3e3e3e;
+    border-color: #ce9191;
+}
+
+.global-player-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex-grow: 1;
+    margin: 0 15px;
+}
+
+.player-progress-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: #c4a9a9;
+}
+
+#global-progress {
+    flex-grow: 1;
+    accent-color: #ce9191;
+    cursor: pointer;
+}
+
+.global-volume-container {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: 15px;
+}
+
+#global-volume {
+    width: 80px;
+    accent-color: #ce9191;
+    cursor: pointer;
+}
+
+.element-panel.audio-element-panel {
+    cursor: pointer;
+}
+
+.element-panel.active-track .element,
+.element-panel.active-track .track-item {
+    border-color: #ce9191 !important;
+}
+/* Styl dla modala obrazu/mediów (ukryty domyślnie, pokazuje się przez JS) */
+.media-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.media-modal-content {
+    background-color: #200707;
+    border: 2px solid #591515;
+    padding: 25px;
+    border-radius: 12px;
+    max-width: 90%;
+    max-height: 90vh;
+    position: relative;
+    color: #c4a9a9;
+}
+
+.media-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #c4a9a9;
+}
+
+.media-close:hover {
+    color: #ce9191;
+}
+
 .del-btn {
     position: absolute;
     top: 11px;
@@ -177,240 +424,4 @@ html, body {height: 100vh; margin: 0; overflow: hidden; text-decoration: none;}
 .del-btn:hover {
     color: #ff4d4d;
     background-color: rgba(255, 77, 77, 0.1);
-}
-
-/* Styl dla przycisku pobierania */
-.download-btn {
-    position: absolute;
-    top: 11px;
-    right: 42px; 
-    z-index: 5;
-    width: 28px;
-    height: 28px;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: none;
-    padding: 0;
-    color: #c4a9a9;
-    border-radius: 4px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: color 0.2s ease, background-color 0.2s ease;
-}
-.download-btn:hover {
-    color: #91ce91;
-    background-color: rgba(145, 206, 145, 0.1);
-}
-
-.new-elements {
-    grid-area: new-dir;
-    text-decoration: none;
-    padding: 15px;
-    display: flex;
-    gap: 15px;
-}
-
-/* Naprawa wyglądu przycisków dodawania w dolnym panelu */
-.new-elements label.element {
-    width: 60px !important;
-    height: 50px !important;
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 0 !important;
-    border-radius: 12px;
-    border: 2px solid #c4a9a9;
-    background-color: #200707;
-}
-.new-elements label.element:hover {
-    border-color: #ce9191;
-}
-
-.folder-icon {
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 2px;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-}
-.popup-checkbox {
-    display: none;
-}
-.popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-.popup-box {
-    background-color: #200707;
-    border: 2px solid #591515;
-    padding: 25px;
-    border-radius: 12px;
-    width: min(400px, 90%);
-    color: #c4a9a9;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-    transform: scale(0.9);
-    transition: transform 0.3s ease;
-}
-
-.element-panel .popup-checkbox:checked ~ .popup-overlay {
-    opacity: 1;
-    visibility: visible;
-}
-.element-panel .popup-checkbox:checked ~ .popup-overlay .popup-box {
-    transform: scale(1);
-}
-
-#popup-folder:checked ~ #overlay-folder,
-#popup-file:checked ~ #overlay-file {
-    opacity: 1;
-    visibility: visible;
-}
-#popup-folder:checked ~ #overlay-folder .popup-box,
-#popup-file:checked ~ #overlay-file .popup-box {
-    transform: scale(1);
-}
-
-.popup-buttons {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.button-popup, button.button-popup {
-    padding: 8px 16px;
-    border-radius: 6px;
-    cursor: pointer;
-    font: inherit;
-    font-family: inherit;
-    background-color: #200707;
-    border: 2px solid;
-    border-color: #c4a9a9;
-    color: #c4a9a9;
-    text-decoration: none;
-}
-.button-popup:hover, button.button-popup:hover {
-    border-color: #ce9191;
-}
-
-/* Kafelki medialne (grafika / wideo) z układem pionowym */
-.media-tile {
-    display: flex;
-    flex-direction: column;   
-    align-items: stretch;
-    width: 200px !important;    
-    height: 210px !important;
-    padding: 12px !important;
-    padding-right: 12px !important;
-}
-
-.media-tile .content-box {
-    width: 100%;
-    padding-right: 50px;      
-    margin-bottom: 8px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;  
-}
-
-.media-tile .file-thumb {
-    width: 100%;
-    height: 140px;
-    object-fit: cover;        
-    border-radius: 8px;
-    display: block;
-    margin: 0 auto;
-    background-color: #000; /* Tło zastępcze dla wideo zanim załaduje się klatka */
-}
-
-/* Miniatura grafiki / wideo w kafelku (176px szerokości, 140px wysokości) */
-.file-thumb {
-    width: 100%;
-    height: 140px;
-    object-fit: cover;        
-    border-radius: 8px;
-    display: block;
-    margin: 0 auto;
-}
-
-.audio-container {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    width: 200px !important;
-    max-width: 200px !important;
-    height: auto !important;
-    min-height: 95px;
-    padding: 13px !important;
-}
-
-/* Styl okna modalnego podglądu */
-.media-modal {
-    display: none;
-    position: fixed;
-    z-index: 10000;
-    left: 0;
-    top: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.85);
-    justify-content: center;
-    align-items: center;
-}
-
-.media-modal-content {
-    background-color: #200707;
-    border: 2px solid #591515;
-    padding: 35px;
-    border-radius: 12px;
-    position: relative;
-    max-width: 90%;
-    max-height: 90vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.media-close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    color: #c4a9a9;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-.media-close:hover {
-    color: #ff4d4d;
-}
-
-.audio-container .content-box {
-    width: 100%;
-    padding-right: 50px; /* Zostawia wolne miejsce na ikony pobierania i kosza u góry */
-    margin-bottom: 10px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis; /* Zwijanie tekstu trzykropkiem */
-}
-/* Odtwarzacz audio dopasowany do szerokości kafelka (100% szerokości wnętrza) */
-.audio-container audio {
-    width: 100% !important;
-    height: 35px;
-    margin-top: auto;
 }
