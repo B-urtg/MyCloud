@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // 2. Budujemy poprawny URL powrotny uwzględniający podfolder
-$redirect_url = "user_panel_test.php";
+$redirect_url = "user_panel.php";
 if (!empty($sub_dir)) {
     $redirect_url .= "?dir=" . urlencode($sub_dir);
 }
